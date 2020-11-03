@@ -16,9 +16,11 @@ bool DataBase::addVillager(std::string nom) {
 	if (pos == -1) {
 		return false;
 	}
+	numberOfAvailableCharacterPerSpecie[availableCharacter[pos].getSpecie()] -= 1;
 	villagers.push_back(availableCharacter[pos]);
 	availableCharacter.erase(availableCharacter.begin() + pos);
 	sortData();
+	saveData();
 	return true;
 }
 
@@ -27,9 +29,11 @@ bool DataBase::deleteVillager(std::string nom){
 	if (pos == -1) {
 		return false;
 	}
+	numberOfAvailableCharacterPerSpecie[villagers[pos].getSpecie()] += 1;
 	availableCharacter.push_back(villagers[pos]);
 	villagers.erase(villagers.begin() + pos);
 	sortData();
+	saveData();
 	return true;
 }
 
@@ -40,6 +44,7 @@ bool DataBase::addVillagerToSearch(std::string nom){
 	}
 	villagersToSearch.push_back(availableCharacter[pos]);
 	sortData();
+	saveData();
 	return true;
 }
 
@@ -50,6 +55,7 @@ bool DataBase::deleteVillagerToSearch(std::string nom){
 	}
 	villagersToSearch.erase(villagersToSearch.begin() + pos);
 	sortData();
+	saveData();
 	return true;
 }
 
