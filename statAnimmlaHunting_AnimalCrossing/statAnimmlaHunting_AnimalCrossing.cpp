@@ -2,8 +2,11 @@
 //
 
 #include <iostream>
+#include "DataBase.h"
+#include "SpecieString.h"
+#include "Vue.h"
 
-int main()
-{
-    std::cout << "Hello World!\n";
+int main(){
+	Vue vue;
+	vue.start();
 }

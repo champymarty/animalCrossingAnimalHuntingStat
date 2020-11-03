@@ -24,7 +24,10 @@
     <ClCompile Include="Character.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Village.cpp">
+    <ClCompile Include="SpecieString.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Vue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -35,7 +38,13 @@
     <ClInclude Include="Character.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Village.h">
+    <ClInclude Include="Specie.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SpecieString.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
