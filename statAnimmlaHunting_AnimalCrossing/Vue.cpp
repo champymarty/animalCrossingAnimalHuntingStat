@@ -22,6 +22,9 @@ void Vue::processCommand(std::vector<std::string> commands) {
 		}else if (commands[0] == "clear") {
 			system("cls");
 		}
+		else if (commands[0] == "help") {
+			std::cout << std::endl << help << std::endl;
+		}
 		else {
 			invalidCommand();
 		}
