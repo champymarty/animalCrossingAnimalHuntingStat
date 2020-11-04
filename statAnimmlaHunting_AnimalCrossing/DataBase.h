@@ -24,9 +24,15 @@ public:
 
 	void printVillage()const;
 	void printVillagerToSearch()const;
+
+	double calculProbToGet(const std::vector <std::string> listNom,const int nbTry)const;
+	double calculProbToGetAll(const int nbTry)const;
+	bool isInSearchCharacter(std::string nom)const;
+
+	bool isMaxVillager();
 private:
 	
-	int NUMBER_OF_SPECIES = 35;
+	const int NUMBER_OF_SPECIES = 35;
 	std::vector<Character> availableCharacter;
 	std::vector<Character> villagers;
 	std::vector<Character> villagersToSearch;
@@ -47,6 +53,7 @@ private:
 	std::vector<std::string> splitString(const std::string& string)const;
 	int searchCharacter(std::string nom, const std::vector<Character>& vector)const;
 	void sortData();
+	double calculProbToGet(const std::string nom)const;
 
 };
 

@@ -13,7 +13,7 @@ void DataBase::saveData(){
 
 bool DataBase::addVillager(std::string nom) {
 	int pos = searchCharacter(nom, availableCharacter);
-	if (pos == -1) {
+	if (pos == -1 || villagers.size() == 10) {
 		return false;
 	}
 	numberOfAvailableCharacterPerSpecie[availableCharacter[pos].getSpecie()] -= 1;
@@ -60,16 +60,11 @@ bool DataBase::deleteVillagerToSearch(std::string nom){
 }
 
 void DataBase::printVillage() const {
-	std::cout << "Villagers in your island: ";
-	if (villagers.empty()) {
-		std::cout << "You don't have any villager in your island" << std::endl;
+	std::cout << "You have "<< villagers.size() << " Villagers in your island: ";
+	for (size_t i = 0; i < villagers.size(); i++) {
+		std::cout << villagers[i].getNom() << " ";
 	}
-	else {
-		for (size_t i = 0; i < villagers.size(); i++) {
-			std::cout << villagers[i].getNom() << " ";
-		}
-		std::cout << std::endl;
-	}
+	std::cout << std::endl;
 }
 
 void DataBase::printVillagerToSearch() const{
@@ -83,6 +78,50 @@ void DataBase::printVillagerToSearch() const{
 		}
 		std::cout << std::endl;
 	}
+}
+
+double DataBase::calculProbToGet(const std::string nom) const{
+	int pos = searchCharacter(nom, villagersToSearch);
+	if (pos == -1) {
+		return 0.0;  
+	}
+	double probaRightSpecie = 1.0 / NUMBER_OF_SPECIES;
+	double probaRightOneInSpecie = 1.0 / numberOfAvailableCharacterPerSpecie[villagersToSearch[pos].getSpecie()];  // = 1 / nbDeRacterePourCetteEspece
+	return probaRightSpecie * probaRightOneInSpecie;
+}
+
+double DataBase::calculProbToGet(const std::vector<std::string> listNom, const int nbTry) const{
+	double probaForSucces = 0.0;
+	for (size_t i = 0; i < listNom.size(); i++){
+		probaForSucces += calculProbToGet(listNom[i]);
+	}
+	double baseWithExponent = std::pow((1 - probaForSucces), nbTry);  //Loi géométrique x ~ G(probaForSucces)
+	return 1 - baseWithExponent;   //Loi géométrique x ~ G(probaForSucces)
+}
+
+double DataBase::calculProbToGetAll(const int nbTry) const{
+	double probaForSucces = 0.0;
+	for (size_t i = 0; i < villagersToSearch.size(); i++) {
+		probaForSucces += calculProbToGet(villagersToSearch[i].getNom());
+	}
+	double baseWithExponent = std::pow((1 - probaForSucces), nbTry);  //Loi géométrique x ~ G(probaForSucces)
+	return 1 - baseWithExponent;   //Loi géométrique x ~ G(probaForSucces)
+}
+
+bool DataBase::isInSearchCharacter(std::string nom) const{
+	for (size_t i = 0; i < villagersToSearch.size(); i++) {
+		std::string nom1 = villagersToSearch[i].getNom();
+		specieStr.toLowerCase(nom1);
+		specieStr.toLowerCase(nom);
+		if (nom1 == nom) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool DataBase::isMaxVillager(){
+	return villagers.size() == 10;
 }
 
 void DataBase::readDataBase(){

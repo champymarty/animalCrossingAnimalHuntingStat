@@ -4,7 +4,7 @@ void Vue::start(){
 	data.printVillage();
 	std::cout << std::endl;
 	data.printVillagerToSearch();
-	std::cout << std::endl << help << std::endl;
+	std::cout << std::endl << help << std::endl  << std::endl;
 	listening();
 }
 
@@ -16,6 +16,7 @@ void Vue::listening(){
 }
 
 void Vue::processCommand(std::vector<std::string> commands) {
+	std::cout << std::endl << "---------------------------------------------------------------------" << std::endl;
 	if (commands.size() == 1) {
 		if (commands[0] == "quit") {
 			exit(0);
@@ -34,18 +35,22 @@ void Vue::processCommand(std::vector<std::string> commands) {
 		}else {
 			invalidCommand();
 		}
-	}else if (commands.size() == 3) {
+	}else if (commands.size() >= 3) {
 		if (commands[0] == "add") {
 			commandAdd(commands);
 		}else if (commands[0] == "remove") {
 			commandRemove(commands);
-		}else {
+		}
+		else if (commands[0] == "stat") {
+			commandStat(commands);
+		}
+		else {
 			invalidCommand();
 		}
 	}else {
 		invalidCommand();
 	}
-
+	std::cout << std::endl << "---------------------------------------------------------------------" << std::endl;
 	listening();
 }
 
@@ -71,7 +76,12 @@ void Vue::commandAdd(std::vector<std::string> commands){
 				std::cout << "The villager " << commands[i] << " has bean hadded to your village" << std::endl;
 			}
 			else {
-				std::cout << "The villager " << commands[i] << " does not exist" << std::endl;
+				if (data.isMaxVillager()) {
+					std::cout << "You have reich the max amount of villager in your island" << std::endl;
+				}
+				else {
+					std::cout << "The villager " << commands[i] << " does not exist" << std::endl;
+				}
 			}
 		}
 	}
@@ -126,4 +136,29 @@ void Vue::commandShow(std::vector<std::string> commands){
 	else if (commands[1] == "search") {
 		data.printVillagerToSearch();
 	}
+}
+
+void Vue::commandStat(std::vector<std::string> commands){
+	if (std::regex_match(commands[1], std::regex{ "[+-]?[0-9]+" })) {
+		int nbTry = std::stoi(commands[1]);
+		if (commands[2] == "all") {
+			std::cout << "The probability to get one of the villager in search list after"<< nbTry << "try is: " << data.calculProbToGetAll(nbTry) * 100 << " %" << std::endl;
+		}
+		else {
+			std::string ouput = "The probability to get ";
+			for (size_t i = 2; i < commands.size(); i++){
+				if (!data.isInSearchCharacter(commands[i])) {
+					std::cout << commands[i] << " is not in your wanted villagers" << std::endl;
+				}
+				else {
+					ouput += commands[i] + " ";
+				}
+			}
+			std::cout << ouput << "after " << nbTry << " try is: " << data.calculProbToGet(commands, nbTry) * 100 << " %" << std::endl;
+		}
+	}
+	else {
+		std::cout << commands[1] << "n'est pas un nombre" << std::endl;
+	}
+
 }
