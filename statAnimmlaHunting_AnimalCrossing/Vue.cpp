@@ -142,7 +142,7 @@ void Vue::commandStat(std::vector<std::string> commands){
 	if (std::regex_match(commands[1], std::regex{ "[+-]?[0-9]+" })) {
 		int nbTry = std::stoi(commands[1]);
 		if (commands[2] == "all") {
-			std::cout << "The probability to get one of the villager in search list after"<< nbTry << "try is: " << data.calculProbToGetAll(nbTry) * 100 << " %" << std::endl;
+			std::cout << "The probability to get one of the villager in search list after "<< nbTry << " try is: " << data.calculProbToGetAll(nbTry) * 100 << " %" << std::endl;
 		}
 		else {
 			std::string ouput = "The probability to get ";
